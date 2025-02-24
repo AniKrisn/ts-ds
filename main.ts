@@ -35,8 +35,55 @@ class LinkedList<T> {
     }
 }
 
-const list = new LinkedList<number>();
-list.append(1);
-list.append(2);
-list.append(3);
-list.print();
+
+// Trie (Prefix Tree)
+class TrieNode {
+    children: Map<string, TrieNode>;
+    isEndofWord: boolean;
+
+    constructor() {
+        this.children = new Map();
+        this.isEndofWord = false;
+    }
+}
+
+class Trie {
+    private root: TrieNode;
+
+    constructor() {
+        this.root = new TrieNode();
+    }
+
+    insert(word: string): void {
+        let node = this.root;
+        for (const char of word) {
+            if (!node.children.has(char)) {
+                node.children.set(char, new TrieNode());
+            }
+            node = node.children.get(char)!;
+        }
+        node.isEndofWord = true;
+    }
+
+    search(word: string): boolean {
+        let node = this.root;
+        for (const char of word) {
+            if(!node.children.has(char)) {
+                return false;
+            }
+            node = node.children.get(char)!;
+        }
+        return node.isEndofWord;
+    }
+
+    startsWith(prefix: string): boolean {
+        let node = this.root;
+        for (const char of prefix) {
+            if (!node.children.has(char)) {
+                return false;
+            }
+            node = node.children.get(char)!;
+        }
+        return true;
+    }
+}
